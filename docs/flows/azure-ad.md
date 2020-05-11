@@ -1,6 +1,6 @@
 # Azure Active Directory
 
-This document is created to describe how the telepharmacy application utlizes Azure AD to authenticate into the required services. More information around the Azure Signal R Service authentication can be found at the [signal-r docs](https://docs.microsoft.com/en-us/azure/azure-signalr/signalr-concept-authenticate-oauth) (link 9) or on this [page](signal-r.md)
+This document is created to describe how this sample application utlizes Azure AD to authenticate into the required services.
 
 ## Client Side React Application
 
@@ -110,4 +110,3 @@ This token will only have access to call out to the onlineMeeting endpoint and w
 1. <https://docs.microsoft.com/en-us/azure/active-directory/develop/v2-oauth2-on-behalf-of-flow>
 1. <https://developer.microsoft.com/en-us/graph/>
 1. <https://docs.microsoft.com/en-us/graph/api/application-post-onlinemeetings?view=graph-rest-1.0&tabs=http>
-1. <https://docs.microsoft.com/en-us/azure/azure-signalr/signalr-concept-authenticate-oauth>
