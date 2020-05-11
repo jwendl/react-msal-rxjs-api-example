@@ -1,3 +1,30 @@
+# dependencies
+/.pnp
+.pnp.js
+
+# testing
+/coverage
+/cypress/fixtures
+/cypress/support
+/cypress/plugins
+/cypress/videos
+/cypress/reports
+/cypress/screenshots
+
+# production
+/build
+
+# misc
+.DS_Store
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
 # Logs
 logs
 *.log
