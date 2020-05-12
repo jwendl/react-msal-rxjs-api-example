@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useState, useEffect } from "react";
 import "./App.css";
 import LoginService from "./services/loginService";
 import Header from "./components/header/header"
@@ -17,41 +17,33 @@ const theme = createMuiTheme({
     },
 });
 
-let loginService = new LoginService();
-class App extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            isLoggedIn: null,
-        }
-    }
+const App = () => {
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-    componentDidMount() {
-        loginService
+    useEffect(() => {
+        LoginService
             .notifications()
             .subscribe(res => {
                 if (res.action === "login") {
-                    this.setState({ isLoggedIn: true })
+                    setIsLoggedIn(true);
                 }
             });
-    }
+    }, []);
 
-    render() {
-        return (
-            <div className="App">
-                <MuiThemeProvider theme={theme}>
-                    <Header loginService={loginService}></Header>
-                    {
-                        this.state.isLoggedIn === null ? <div> &nbsp;&nbsp;&nbsp;Please Switch to Enabled Status</div>
-                            : <div className="Dashboard">
-                                <CalendarList className="Client-list" loginService={loginService}></CalendarList>
-                                <UserProfile loginService={loginService}></UserProfile>
-                            </div>
-                    }
-                </MuiThemeProvider>
-            </div>
-        );
-    }
+    return (
+        <div className="App">
+            <MuiThemeProvider theme={theme}>
+                <Header></Header>
+                {
+                    isLoggedIn === false ? <div> &nbsp;&nbsp;&nbsp;Please Switch to Enabled Status</div>
+                        : <div className="Dashboard">
+                            <CalendarList className="Client-list"></CalendarList>
+                            <UserProfile></UserProfile>
+                        </div>
+                }
+            </MuiThemeProvider>
+        </div>
+    );
 }
 
 export default App;

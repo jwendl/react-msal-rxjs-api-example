@@ -1,62 +1,37 @@
-import React from "react";
+import React, { useState } from "react";
+import LoginService from "../../services/loginService";
 import FormGroup from "@material-ui/core/FormGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Switch from "@material-ui/core/Switch";
-import PropTypes from "prop-types";
 
-class UserEnabled extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            checked: false,
-            label: "User Disabled",
-        };
+const UserEnabled = () => {
+    const [checked, setChecked] = useState(false);
+    const [label, setLabel] = useState(null);
 
-        this.loginService = props.loginService;
-    }
+    LoginService
+        .notifications()
+        .subscribe(res => {
+            if (res.action === "login") {
+                setChecked(true);
+                setLabel("User Enabled");
+            }
+        });
 
-    async componentDidMount() {
-        this.loginService
-            .notifications()
-            .subscribe(res => {
-                if (res.action === "login") {
-                    this.setState({
-                        checked: true,
-                        label: "User Enabled",
-                    });
-
-                    this.loginService.refreshToken();
+    return (
+        <FormGroup row>
+            <FormControlLabel
+                control={
+                    <Switch
+                        checked={checked}
+                        onChange={LoginService.login.bind(this)}
+                        color="primary"
+                        name="agentEnabled"
+                        inputProps={{ "aria-label": "primary checkbox" }}
+                    />
                 }
-            });
-    }
-
-    async login() {
-        await this.loginService.login();
-    }
-
-    static get propTypes() {
-        return {
-            loginService: PropTypes.object,
-        }
-    }
-
-    render() {
-        return (
-            <FormGroup row>
-                <FormControlLabel
-                    control={
-                        <Switch
-                            checked={this.state.checked}
-                            onChange={this.login.bind(this)}
-                            color="primary"
-                            name="agentEnabled"
-                            inputProps={{ "aria-label": "primary checkbox" }}
-                        />
-                    }
-                    label={this.state.label} />
-            </FormGroup>
-        );
-    }
+                label={label} />
+        </FormGroup>
+    );
 }
 
 export default UserEnabled;

@@ -22,62 +22,59 @@ const config = {
 };
 
 const publicClientApplication = new msal.PublicClientApplication(config);
+const subject = new Subject();
 
-export default class LoginService {
-    constructor() {
-        this.subject = new Subject();
+const sendLogin = (loginResponse) => {
+    var response = {
+        action: "login",
+        accessToken: loginResponse.accessToken,
+        uniqueId: loginResponse.uniqueId,
     }
 
-    async login() {
-        await publicClientApplication.loginPopup(loginRequest).then(async (response) => {
-            this.sendLogin(response);
+    subject.next(response);
+    sendRefresh(loginResponse);
+}
+
+const sendRefresh = (loginResponse) => {
+    var response = {
+        action: "refresh",
+        accessToken: loginResponse.accessToken,
+        uniqueId: loginResponse.uniqueId,
+    }
+
+    subject.next(response);
+}
+
+const LoginService = {
+    login: function () {
+        publicClientApplication.loginPopup(loginRequest).then(async (response) => {
+            sendLogin(response);
         })
             .catch(async (error) => {
                 console.log("There was an error with login: " + error);
             });
-    };
-
-    async refreshToken() {
-        await publicClientApplication.acquireTokenSilent(refreshRequest)
+    },
+    refreshToken: function () {
+        publicClientApplication.acquireTokenSilent(refreshRequest)
             .then(async (response) => {
-                this.sendRefresh(response);
+                sendRefresh(response);
             })
             .catch(async (error) => {
-                await publicClientApplication.acquireTokenPopup(refreshRequest)
+                publicClientApplication.acquireTokenPopup(refreshRequest)
                     .then(async (response) => {
-                        this.sendRefresh(response);
+                        sendRefresh(response);
                     })
                     .catch(async (error) => {
                         console.log("error: " + error);
                     });
             });
-    }
-
-    logoff() {
+    },
+    logoff: function () {
         publicClientApplication.logout();
-    }
-
-    sendLogin(loginResponse) {
-        var response = {
-            action: "login",
-            accessToken: loginResponse.accessToken,
-            uniqueId: loginResponse.uniqueId,
-        }
-
-        this.subject.next(response);
-    }
-
-    sendRefresh(loginResponse) {
-        var response = {
-            action: "refresh",
-            accessToken: loginResponse.accessToken,
-            uniqueId: loginResponse.uniqueId,
-        }
-
-        this.subject.next(response);
-    }
-
-    notifications() {
-        return this.subject.asObservable();
+    },
+    notifications: function () {
+        return subject.asObservable();
     }
 }
+
+export default LoginService;
