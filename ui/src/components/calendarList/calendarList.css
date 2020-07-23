@@ -1,0 +1,21 @@
+.List-container {
+    flex: 1;
+    padding-left: 2vh;
+  }
+  
+  .List-title, .List {
+    flex: 1;
+    text-align: center;
+  }
+  
+  .Grid {
+    flex-direction: column;
+  }
+  
+  .List {
+    flex: 1;
+    border-style: solid;
+    overflow-y: scroll;
+    min-height: 75vh;
+    max-height: 75vh;
+  }

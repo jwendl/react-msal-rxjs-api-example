@@ -1,0 +1,9 @@
+.App-header {
+    min-height: 10vh;
+    flex-grow: 1;
+  }
+  
+  .Title {
+    flex-grow: 1;
+    text-align: left;
+  }

@@ -1,0 +1,21 @@
+.Dashboard {
+    min-height: 90vh;
+    height: 100%;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    font-size: calc(10px + 2vmin);
+  }
+  
+  .Client-list, .Team-Stats {
+    display: flex;
+    flex: 1;
+  }
+  
+  .App {
+    height: 100%;
+  }
+  
+  html, body, #root {
+    height: 100%;
+  }
